@@ -91,18 +91,14 @@ theme.titlebar_minimize_button_focus_hover =
 -- Floating Button
 local floating_color = 'blue'
 theme.titlebar_floating_button_normal_active = tip .. 'black_normal.svg'
-theme.titlebar_floating_button_focus_active = tip .. 'black_light.svg'
-theme.titlebar_floating_button_normal_inactive =
-  tip .. floating_color .. '_normal.svg'
-theme.titlebar_floating_button_focus_inactive =
-  tip .. floating_color .. '_normal.svg'
+theme.titlebar_floating_button_normal_inactive = tip .. 'black_normal.svg'
+theme.titlebar_floating_button_focus_active = tip .. floating_color .. '_normal.svg'
+theme.titlebar_floating_button_focus_inactive = tip .. floating_color .. '_normal.svg'
 -- Hovered Floating Button
-theme.titlebar_floating_button_normal_inactive_hover = tip .. 'black_light.svg'
-theme.titlebar_floating_button_focus_inactive_hover =
-  tip .. floating_color .. '_light.svg'
-theme.titlebar_floating_button_normal_active_hover = tip .. 'black_light.svg'
-theme.titlebar_floating_button_focus_active_hover =
-  tip .. floating_color .. '_light.svg'
+theme.titlebar_floating_button_normal_inactive_hover = tip ..floating_color .. '_light.svg'
+theme.titlebar_floating_button_focus_inactive_hover = tip .. floating_color .. '_light.svg'
+theme.titlebar_floating_button_normal_active_hover = tip .. floating_color .. '_light.svg'
+theme.titlebar_floating_button_focus_active_hover = tip .. floating_color .. '_light.svg'
 
 -- Maximized Button
 local maximized_color = 'green'
