@@ -11,11 +11,14 @@ local icons = require('theme.icons')
 -- local watch = awful.widget.watch
 
 local brightness_widget = {}
+-- customizable get and set methods
+brightness_widget.set_command = 'xbacklight -set '
 
 brightness_widget.watch_active = nil
 brightness_widget.created_widgets = {}
 
-brightness_widget.value = 0
+
+brightness_widget.value = nil
 
 brightness_widget.start_watch = function()
   brightness_widget.watch_active = true
@@ -29,30 +32,28 @@ brightness_widget.start_watch = function()
         value = 0
       end
       brightness_widget.value = value
-      awful.spawn('xbacklight -set ' .. brightness_widget.value, false)
-      awesome.emit_signal('widget::brightness:update_visuals')
-    end)
-
-  awesome.connect_signal(
-    'widget::brightness:change', function(value)
-      value = brightness_widget.value + value
-      if value > 100 then
-        value = 100
-      elseif value < 0 then
-        value = 0
+      if type(brightness_widget.set_command) == "string" then
+        awful.spawn(brightness_widget.set_command .. brightness_widget.value, false)
+      elseif type(brightness_widget.set_command) == "function" then
+        brightness_widget.set_command(value)
       end
-      brightness_widget.value = value
-      awful.spawn('xbacklight -set ' .. brightness_widget.value, false)
       awesome.emit_signal('widget::brightness:update_visuals')
       awesome.emit_signal('widget::brightness_osd:show', true)
     end)
 
-  -- for initialization
-  awful.spawn.easy_async_with_shell(
-    'xbacklight -get ', function(stdout)
-      brightness_widget.value = tonumber(stdout) or 0
-      awesome.emit_signal('widget::brightness:update_visuals')
+  awesome.connect_signal(
+    'widget::brightness:change', function(value)
+      awesome.emit_signal('widget::brightness:set', brightness_widget.value + value)
     end)
+
+  -- for initialization
+  if not brightness_widget.value then
+    awful.spawn.easy_async_with_shell(
+      'xbacklight -get ', function(stdout)
+        brightness_widget.value = tonumber(stdout) or 0
+        -- do NOT update visuals here
+      end)
+  end
 end
 
 brightness_widget.build_dashboard = function(args)
